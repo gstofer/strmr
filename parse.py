@@ -25,3 +25,18 @@ class config:
 		
 		self.config['music'].update({'folder':
 			splitComma(parser.get('music', 'folder', 0))})
+
+def musicFolder(folder):
+	"""
+		Walk through the music folders and create song objects.  
+		Return an array
+	"""
+	songs = []
+	list = os.listdir(folder)
+	for (path, dirs, files) in os.walk(folder):
+		for file in files:
+			songpath = os.path.realpath(path)
+			song = music.song(path=songpath, filename=file)
+			songs.append(song)
+	
+	return songs

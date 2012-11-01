@@ -40,3 +40,15 @@ def musicFolder(folder):
 			songs.append(song)
 	
 	return songs
+
+def splitComma(value):
+	"""
+	
+	"""
+	values = []
+	splits = value.split(',')
+	
+	for split in splits:
+		values.append(split.strip())
+	
+	return values

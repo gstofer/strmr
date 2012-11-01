@@ -10,6 +10,19 @@ class song:
 		self.filename = filename
 		self.hash = hash
 
+	def fullpath(self):
+		return self.path + "\\" + self.filename
+	
+	def getHash(self):
+		md5 = hashlib
+		with open(self.fullpath(), 'rb') as f:
+			while True:
+				data = f.read(1024)
+				if not data:
+					break
+				md5.update(data)
+		return md5.hexdigest()		
+
 class artist:
 	def __init__(self, name="", id=""):
 		"""

@@ -1,0 +1,25 @@
+[music]
+#####
+#	folders where music is kept
+#####
+folder = /var/music, /var/music2
+
+#####
+#   folders where playlists are kept
+#####
+playlists = /var/playlists
+
+#####
+#	mask for renaming files. see templating for more details
+#####
+mask = 
+
+[admin]
+#####
+#	use username and password to access streamer
+#####
+security = False
+
+#defined by security value
+username = 
+password = 

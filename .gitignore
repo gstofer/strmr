@@ -1,4 +1,6 @@
 *.py[co]
+test/*
+*.bak
 
 # Packages
 *.egg

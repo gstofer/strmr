@@ -25,7 +25,6 @@ class config:
 		
 		self.musicFolders = splitComma(parser.get('music', 'folder', 0))
 		
-
 def pullMusic(folders):	
 	""" 
 		Walk through the music folders and create song objects.  

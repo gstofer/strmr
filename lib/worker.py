@@ -12,7 +12,7 @@ def enterDB(dbQueue, lock):
 			file = info[0]
 			song = music.song(path=songpath, filename=file)
 			song.pullInfo()
-			print song.fullpath()
+			print song.title
 			#stuff to enter into database
 		except Queue.Empty:
 			print "Empty DB Queue"

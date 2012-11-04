@@ -21,7 +21,10 @@ class song:
 				if not data:
 					break
 				md5.update(data)
-		return md5.hexdigest()		
+		return md5.hexdigest()
+	
+	def pullInfo(self):
+		pass
 
 class artist:
 	def __init__(self, name="", id=""):
@@ -42,4 +45,4 @@ class album:
 		self.id = ""
 		self.name = name
 		self.songs = []
-		self.year = year
+		self.year = year	

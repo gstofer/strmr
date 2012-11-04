@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
-import parse
+import parse, multithreading
 
 class strmr:
 	__init__(self):
-		pass
+		config = parse.config()
+		parse.pullMusic(config.musicFolders)

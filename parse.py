@@ -4,47 +4,49 @@
 #	importing python modules
 ####
 import ConfigParser, os
+import time
+from multiprocessing import Queue, Process, Lock
 
 ####
 #	importing strmr modules
-####
+####		
 import music
+from lib import db
+from lib import worker
 
 class config:
 	def __init__(self, file="strmr.conf"):
 		parser = ConfigParser.SafeConfigParser()
 		parser.read(file)
 		
-		self.config = {'admin':{}, 'music':{}}
 		if(parser.getboolean('admin', 'security')):
-			self.config['admin'].update({'username':
-				parser.get('admin', username, 0)})
-			
-			self.config['admin'].update({'password':
-				parser.get('admin', password, 0)})
+			self.username = parser.get('admin', username, 0)
+			self.password = parser.get('admin', password, 0)
 		
-		self.config['music'].update({'folder':
-			splitComma(parser.get('music', 'folder', 0))})
+		self.musicFolders = splitComma(parser.get('music', 'folder', 0))
+		
 
-def musicFolder(folder):
-	"""
+def pullMusic(folders):	
+	""" 
 		Walk through the music folders and create song objects.  
 		Return an array
 	"""
-	songs = []
-	list = os.listdir(folder)
-	for (path, dirs, files) in os.walk(folder):
-		for file in files:
-			songpath = os.path.realpath(path)
-			song = music.song(path=songpath, filename=file)
-			songs.append(song)
+	print "Start!"
+	lock = Lock()
+	dbQueue = Queue()
+	for folder in folders:
+		walker = Process(target=worker.walker, args=(folder, dbQueue, lock,))
+		walker.start()
+	while dbQueue.empty():
+		pass
 	
-	return songs
-
+	enterdb = Process(target=worker.enterDB, args=(dbQueue, lock,))
+	enterdb.start()
+	enterdb.join()
+	
+	print "Done!"
+	
 def splitComma(value):
-	"""
-	
-	"""
 	values = []
 	splits = value.split(',')
 	

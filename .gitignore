@@ -1,6 +1,7 @@
 *.py[co]
 test/*
 *.bak
+strmr.conf
 
 # Packages
 *.egg

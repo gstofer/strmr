@@ -5,16 +5,15 @@ from lib.mutagen import easyid3
 import hashlib
 
 class song:
-	def __init__(self, name="", id="", path="", filename="", hash="", 
-			album="", artist="", length="", track="", genre="", 
-			year="", rating=""):
+	def __init__(self, name=0, id=0, path=0, filename=0, hash=0, album=0, 
+			artist=0, length=0, track=0, genre=0, year=0, rating=0):
 		self.id = id
 		self.name = name
 		self.path = path
 		self.filename = filename
 		self.hash = hash
 		self.album = album
-		self.arist = artist
+		self.artist = artist
 		self.length = length
 		self.track = track
 		self.genre = genre
@@ -24,25 +23,42 @@ class song:
 	def fullpath(self):
 		return self.path + "\\" + self.filename
 	
-	def getHash(self):
-		md5 = hashlib
+	def pullHash(self):
+		md5 = hashlib.md5()
 		with open(self.fullpath(), 'rb') as f:
 			while True:
 				data = f.read(1024)
 				if not data:
 					break
 				md5.update(data)
-		return md5.hexdigest()
+		self.hash = md5.hexdigest()
 	
 	def pullInfo(self):
 		audio  = mp3.MP3(self.fullpath(), ID3=easyid3.EasyID3)
 		self.title = audio['title'][0]
 		self.artist = audio['artist'][0]
 		self.album = audio['album'][0]
-		#self.track = audio['tracknumber'][0]
-		#self.year = audio['date'][0]
-		#self.genre = audio['genre'][0]
+		self.track = audio['tracknumber'][0]
+		self.year = audio['date'][0]
+		self.genre = audio['genre'][0]
 		
+	def pulltitle(self):
+		pass
+		
+	def pullartist(self):
+		pass
+		
+	def pullalbum(self):
+		pass
+	
+	def pulltrack(self):
+		pass
+	
+	def pullyear(self):
+		pass
+	
+	def pullgenre(self):
+		pass
 
 class artist:
 	def __init__(self, name="", id=""):

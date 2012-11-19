@@ -2,6 +2,7 @@
 test/*
 *.bak
 strmr.conf
+data/strmr.db
 
 # Packages
 *.egg

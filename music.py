@@ -6,7 +6,8 @@ import hashlib
 
 class song:
 	def __init__(self, name="", id="", path="", filename="", hash="", 
-			album="", artist="", length="", track="", genre=""):
+			album="", artist="", length="", track="", genre="", 
+			year="", rating=""):
 		self.id = id
 		self.name = name
 		self.path = path
@@ -17,6 +18,8 @@ class song:
 		self.length = length
 		self.track = track
 		self.genre = genre
+		self.year = year
+		self.rating = rating
 
 	def fullpath(self):
 		return self.path + "\\" + self.filename
@@ -36,9 +39,9 @@ class song:
 		self.title = audio['title'][0]
 		self.artist = audio['artist'][0]
 		self.album = audio['album'][0]
-		self.track = audio['tracknumber'][0]
-		self.year = audio['date'][0]
-		self.genre = audio['genre'][0]
+		#self.track = audio['tracknumber'][0]
+		#self.year = audio['date'][0]
+		#self.genre = audio['genre'][0]
 		
 
 class artist:

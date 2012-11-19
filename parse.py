@@ -30,7 +30,7 @@ def pullMusic(folders):
 		Walk through the music folders and create song objects.  
 		Return an array
 	"""
-	print "Start!"
+	print "Start Parsing Folders!"
 	lock = Lock()
 	dbQueue = Queue()
 	for folder in folders:
@@ -39,7 +39,9 @@ def pullMusic(folders):
 	while dbQueue.empty():
 		pass
 	
-	enterdb = Process(target=worker.enterDB, args=(dbQueue, lock,))
+	#time.sleep(3)
+	
+	enterdb = Process(target=worker.enterDB, args=(dbQueue, lock))
 	enterdb.start()
 	enterdb.join()
 	

@@ -1,28 +1,37 @@
 from multiprocessing import Queue
-import music, os
-import Queue
+import os, time
+
+from lib import helper
+import music
+
+def check(walking):
+	for walker in walking:
+		if walker.is_alive:
+			return True
+	return False
 
 def enterDB(dbQueue, lock):
 	while not dbQueue.empty():
 		try:
 			lock.acquire()
-			info = dbQueue.get(True, 5)
+			path, file = dbQueue.get(timeout=5)
 			lock.release()
-			songpath = os.path.realpath(info[1])
-			file = info[0]
-			song = music.song(path=songpath, filename=file)
-			song.pullInfo()
-			print song.title
+			songpath = os.path.realpath(path)
+			md5hash = md5Checksum(songpath, file)
+			song = music.song(path=songpath, filename=file, hash=md5hash)
+			#song.pullInfo()
+			print song.filename
 			#stuff to enter into database
+			if dbQueue.qsize() < 2:
+				print "Sleeping to get more entries"
+				time.sleep(3)
 		except Queue.Empty:
 			print "Empty DB Queue"
-			lock.release()
 
 def walker(folder, dbQueue, lock):
 	for (path, dirs, files) in os.walk(folder):
-		for file in files:
+		mp3s = filter(lambda x: 'mp3' == x[-3:], files)
+		for file in mp3s:
 			lock.acquire()
 			dbQueue.put((file, path))
 			lock.release()
-		for dir in dirs:
-			walker(dir, dbQueue, lock)

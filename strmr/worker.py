@@ -1,9 +1,8 @@
 from multiprocessing import Queue
 import os, time
 
-from lib import helper
-from lib import db
-import music
+from strmr import db
+from strmr import music
 
 def enterDB(dbQueue, lock):
 	while not dbQueue.empty():
@@ -12,8 +11,8 @@ def enterDB(dbQueue, lock):
 			path, file = dbQueue.get(timeout=5)
 			lock.release()
 			songpath = os.path.realpath(path)
-			md5hash = md5Checksum(songpath, file)
-			song = music.song(path=songpath, filename=file, hash=md5hash)
+			song = music.song(path=songpath, filename=file)
+			song.pullHash()
 			# song.pullInfo()
 			# print song.filename
 			# stuff to enter into database

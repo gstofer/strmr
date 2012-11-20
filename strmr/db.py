@@ -1,7 +1,6 @@
 import sqlite3
 
-import music
-from lib import parse
+from strmr import music
 	
 def initdb():
 	c, conn = connect()
@@ -19,7 +18,7 @@ def selectSong(id):
 	c, conn = connect()
 	c.execute(sql)
 	sinfo = c.fetchone()
-	song = parse.songSql(sinfo)
+	song = music.song.songSql(sinfo)
 	return song
 	
 def enterSong(song):

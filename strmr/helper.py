@@ -1,3 +1,5 @@
+import hashlib
+
 def md5Checksum(path, file):
 	filepath = path + '\\' + file
 	fh = open(filepath, 'rb')

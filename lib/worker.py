@@ -2,6 +2,7 @@ from multiprocessing import Queue
 import os, time
 
 from lib import helper
+from lib import db
 import music
 
 def check(walking):
@@ -19,9 +20,10 @@ def enterDB(dbQueue, lock):
 			songpath = os.path.realpath(path)
 			md5hash = md5Checksum(songpath, file)
 			song = music.song(path=songpath, filename=file, hash=md5hash)
-			#song.pullInfo()
-			print song.filename
-			#stuff to enter into database
+			# song.pullInfo()
+			# print song.filename
+			# stuff to enter into database
+			db.enterSong(song)
 			if dbQueue.qsize() < 2:
 				print "Sleeping to get more entries"
 				time.sleep(3)

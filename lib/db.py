@@ -22,7 +22,6 @@ def selectSong(id):
 	song = parse.songSql(sinfo)
 	return song
 	
-	
 def enterSong(song):
 	c, conn = connect()
 	sql = []

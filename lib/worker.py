@@ -5,12 +5,6 @@ from lib import helper
 from lib import db
 import music
 
-def check(walking):
-	for walker in walking:
-		if walker.is_alive:
-			return True
-	return False
-
 def enterDB(dbQueue, lock):
 	while not dbQueue.empty():
 		try:

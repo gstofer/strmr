@@ -1,6 +1,7 @@
 import sqlite3
 
 import music
+from lib import parse
 	
 def initdb():
 	c, conn = connect()
@@ -13,6 +14,15 @@ def initdb():
 		c.execute(query)
 	conn.commit()
 
+def selectSong(id):
+	sql = "SELECT * FROM SONG WHERE id = " + id + ";"
+	c, conn = connect()
+	c.execute(sql)
+	sinfo = c.fetchone()
+	song = parse.songSql(sinfo)
+	return song
+	
+	
 def enterSong(song):
 	c, conn = connect()
 	sql = []

@@ -1,11 +1,12 @@
 from strmr import parse
+from strmr import webserv
 
 def main():
-	def __init__(self):
-		print "Ready to start?"
-		raw_input()
-		config = parse.config()
-		parse.pullMusic(config.musicFolders)
+	print "Ready to start?"
+	raw_input()
+	config = parse.config()
+	parse.pullMusic(config.musicFolders)
+	webserv.startserv()
 
 if __name__ == '__main__':
 	main()

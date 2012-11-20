@@ -23,3 +23,8 @@ security = False
 #defined by security value
 username = 
 password = 
+
+[server]
+port = 9000
+username=
+password=

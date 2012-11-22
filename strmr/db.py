@@ -26,8 +26,9 @@ def enterSong(song):
 	sql = []
 
 	if checkHash(song):
-		appendSong(song)
-	
+		sql2 = appendSong(song)
+		sql += sql2
+		
 		if song.artist:
 			sql2 = appendArtist(song)
 			sql += sql2
@@ -39,16 +40,20 @@ def enterSong(song):
 	for query in sql:
 		c.execute(query)
 	conn.commit()
+	return sql
 
 def checkHash(song):
 	sql = "Select path, filename, hash from songs where hash = '" + song.hash + "';"
 	c, conn = connect()
 	c.execute(sql)
-	path, file, hash = c.fetchone()
-	if hash == song.hash:
-		return False
-	else:
-		return True
+	notexists = True
+	for (path, filename, hash) in c:
+		if hash == song.hash:
+			notexists = False
+		else:
+			notexists = True
+	return notexists
+	
 	
 def appendSong(song):
 	sql = []

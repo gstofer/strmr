@@ -1,4 +1,5 @@
 from multiprocessing import Queue
+from Queue import Empty
 import os, time
 
 from strmr import db
@@ -20,7 +21,7 @@ def enterDB(dbQueue, lock):
 			if dbQueue.qsize() < 2:
 				print "Sleeping to get more entries"
 				time.sleep(3)
-		except Queue.Empty:
+		except Empty:
 			print "Empty DB Queue"
 
 def walker(folder, dbQueue, lock):
@@ -28,5 +29,5 @@ def walker(folder, dbQueue, lock):
 		mp3s = filter(lambda x: 'mp3' == x[-3:], files)
 		for file in mp3s:
 			lock.acquire()
-			dbQueue.put((file, path))
+			dbQueue.put((path, file))
 			lock.release()

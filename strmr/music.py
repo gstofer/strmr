@@ -38,7 +38,7 @@ class song:
 		self.title = self.pulltitle(audio)
 		self.artist = self.pullartist(audio)
 		self.album = self.pullalbum(audio)
-		self.track = audio['tracknumber'][0]
+		self.track = self.pulltrack(audio)
 		self.year = self.pullyear(audio)
 		self.genre = self.pullgenre(audio)
 		
@@ -70,7 +70,13 @@ class song:
 		return album
 	
 	def pulltrack(self):
-		pass
+		track = ""
+		trackTag = ['TRCK']
+		for tag in trackTag:
+			if tag in audio.keys():
+				track = audio[tag].text
+				break
+		return track
 	
 	def pullyear(self, audio):
 		year = ""

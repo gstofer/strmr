@@ -34,9 +34,9 @@ class song:
 		self.hash = md5.hexdigest()
 	
 	def pullInfo(self):
-		audio  = mp3.MP3(self.fullpath(), ID3=easyid3.EasyID3)
+		audio  = mp3.MP3(self.fullpath())
 		self.title = audio['title'][0]
-		self.artist = audio['artist'][0]
+		self.artist = self.pullartist(audio)
 		self.album = audio['album'][0]
 		self.track = audio['tracknumber'][0]
 		self.year = audio['date'][0]
@@ -45,8 +45,14 @@ class song:
 	def pulltitle(self):
 		pass
 		
-	def pullartist(self):
-		pass
+	def pullartist(self, audio):
+		artist = ""
+		artistTag = ['TPE1', 'TPE2']
+		for tag in artistTag:
+			if tag in audio.keys()
+				artist = audio[tag].text
+				break
+		return artist
 		
 	def pullalbum(self):
 		pass

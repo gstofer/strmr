@@ -57,8 +57,11 @@ def checkHash(song):
 	
 def appendSong(song):
 	sql = []
-	sql.append("INSERT INTO SONGS (filename, path, hash) VALUES ('" 
-		+ song.filename + "', '" + song.path + "', '" + song.hash + "');")
+	sql.append("INSERT INTO SONGS (filename, path, hash, length, track, "
+		+ "genre, year) VALUES ('" + song.filename + "', '" + song.path 
+		+ "', '" + str(song.hash) + ", '" + str(song.length) + "', '" 
+		+ '/'.join(str(song.track)) + "', '" + '/'.join(str(song.genre)) 
+		+ "', '" + str(song.year) + "');")
 	return sql
 	
 def appendArtist(song):
@@ -78,7 +81,10 @@ def appendAlbum(song):
 	sql.append("INSERT INTO ALBUM ('name') VALUES ('" 
 	+ song.album + "');")
 	
-	sql.append("INSERT INTO songs_album ('songs_id, album_id')"
+	sql.append("INSERT INTO songs_album ('songs_id', 'album_id')"
+	+ " VALUES ((select id from songs where hash = '" + song.hash + "'), "
+	+ "(select id from album where name = '" + song.album + "'));")
+	sql.append("INSERT INTO artist_album ('artist_id', 'album_id')"
 	+ " VALUES ((select id from songs where hash = '" + song.hash + "'), "
 	+ "(select id from album where name = '" + song.album + "'));")
 	

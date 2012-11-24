@@ -3,6 +3,7 @@
 from lib.mutagen import mp3
 from lib.mutagen import easyid3
 import hashlib
+import os
 
 class song:
 	def __init__(self, name=0, id=0, path=0, filename=0, hash=0, album=0, 
@@ -19,6 +20,8 @@ class song:
 		self.genre = genre
 		self.year = year
 		self.rating = rating
+		if os.path.exists(self.fullpath()):
+			self.pullHash()
 
 	def fullpath(self):
 		return self.path + "\\" + self.filename
@@ -39,7 +42,7 @@ class song:
 		self.artist = self.pullartist(audio)
 		self.album = self.pullalbum(audio)
 		self.track = self.pulltrack(audio)
-		self.year = self.pullyear(audio)
+		self.year = self.pullyear(audio)[0]
 		self.genre = self.pullgenre(audio)
 		self.length = audio.info.length
 		
@@ -70,7 +73,7 @@ class song:
 				break
 		return album
 	
-	def pulltrack(self):
+	def pulltrack(self, audio):
 		track = ""
 		trackTag = ['TRCK']
 		for tag in trackTag:

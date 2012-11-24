@@ -35,7 +35,7 @@ class song:
 	
 	def pullInfo(self):
 		audio  = mp3.MP3(self.fullpath())
-		self.title = audio['title'][0]
+		self.title = self.pulltitle(audio)
 		self.artist = self.pullartist(audio)
 		self.album = audio['album'][0]
 		self.track = audio['tracknumber'][0]
@@ -43,7 +43,13 @@ class song:
 		self.genre = self.pullgenre(audio)
 		
 	def pulltitle(self):
-		pass
+		title = ""
+		titleTag = ['TIT2']
+		for tag in titleTag:
+			if tag in audio.keys():
+				title = audio[tag].text
+				break
+		return title
 		
 	def pullartist(self, audio):
 		artist = ""

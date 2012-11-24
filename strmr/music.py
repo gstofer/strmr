@@ -39,8 +39,8 @@ class song:
 		self.artist = self.pullartist(audio)
 		self.album = audio['album'][0]
 		self.track = audio['tracknumber'][0]
-		self.year = audio['date'][0]
-		self.genre = audio['genre'][0]
+		self.year = self.pullyear(audio)
+		self.genre = self.pullgenre(audio)
 		
 	def pulltitle(self):
 		pass
@@ -49,7 +49,7 @@ class song:
 		artist = ""
 		artistTag = ['TPE1', 'TPE2']
 		for tag in artistTag:
-			if tag in audio.keys()
+			if tag in audio.keys():
 				artist = audio[tag].text
 				break
 		return artist
@@ -61,10 +61,22 @@ class song:
 		pass
 	
 	def pullyear(self):
-		pass
+		year = ""
+		yearTag = ['TDRC', 'TDAT', 'TRDA', 'TYER', 'TIME']
+		for tag in yearTag:
+			if tag in audio.keys():
+				year = audio[tag].text
+				break
+		return year
 	
-	def pullgenre(self):
-		pass
+	def pullgenre(self, audio):
+		genre = ""
+		genreTag = ['TCON']
+		for tag in genreTag:
+			if tag in audio.keys():
+				genre = audio[tag].text
+				break
+		return genre
 		
 	def songSql(sinfo):
 		self.id = 0

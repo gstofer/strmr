@@ -37,12 +37,12 @@ class song:
 		audio  = mp3.MP3(self.fullpath())
 		self.title = self.pulltitle(audio)
 		self.artist = self.pullartist(audio)
-		self.album = audio['album'][0]
+		self.album = self.pullalbum(audio)
 		self.track = audio['tracknumber'][0]
 		self.year = self.pullyear(audio)
 		self.genre = self.pullgenre(audio)
 		
-	def pulltitle(self):
+	def pulltitle(self, audio):
 		title = ""
 		titleTag = ['TIT2']
 		for tag in titleTag:
@@ -60,13 +60,19 @@ class song:
 				break
 		return artist
 		
-	def pullalbum(self):
-		pass
+	def pullalbum(self, audio):
+		album = ""
+		albumTag = ['TALB']
+		for tag in albumTag:
+			if tag in audio.keys():
+				album = audio[tag].text
+				break
+		return album
 	
 	def pulltrack(self):
 		pass
 	
-	def pullyear(self):
+	def pullyear(self, audio):
 		year = ""
 		yearTag = ['TDRC', 'TDAT', 'TRDA', 'TYER', 'TIME']
 		for tag in yearTag:

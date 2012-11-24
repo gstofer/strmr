@@ -41,6 +41,7 @@ class song:
 		self.track = self.pulltrack(audio)
 		self.year = self.pullyear(audio)
 		self.genre = self.pullgenre(audio)
+		self.length = audio.info.length
 		
 	def pulltitle(self, audio):
 		title = ""

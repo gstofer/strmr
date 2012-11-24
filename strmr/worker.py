@@ -14,8 +14,9 @@ def enterDB(dbQueue, lock):
 			songpath = os.path.realpath(path)
 			song = music.song(path=songpath, filename=file)
 			song.pullHash()
-			# song.pullInfo()
+			song.pullInfo()
 			# print song.filename
+			
 			# stuff to enter into database
 			db.enterSong(song)
 			if dbQueue.qsize() < 2:

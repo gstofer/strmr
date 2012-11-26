@@ -20,8 +20,9 @@ class song:
 		self.genre = genre
 		self.year = year
 		self.rating = rating
-		if os.path.exists(self.fullpath()):
-			self.pullHash()
+		if filename and path:
+			if os.path.exists(self.fullpath()):
+				self.pullHash()
 
 	def fullpath(self):
 		return self.path + "\\" + self.filename
@@ -36,13 +37,18 @@ class song:
 				md5.update(data)
 		self.hash = md5.hexdigest()
 	
+	def gettype(self):
+		file = self.filename
+		ext = file[-3:]
+		return ext
+	
 	def pullInfo(self):
 		audio  = mp3.MP3(self.fullpath())
 		self.title = self.pulltitle(audio)
 		self.artist = self.pullartist(audio)
 		self.album = self.pullalbum(audio)
 		self.track = self.pulltrack(audio)
-		self.year = self.pullyear(audio)[0]
+		self.year = self.pullyear(audio).__str__()
 		self.genre = self.pullgenre(audio)
 		self.length = audio.info.length
 		
@@ -87,7 +93,9 @@ class song:
 		yearTag = ['TDRC', 'TDAT', 'TRDA', 'TYER', 'TIME']
 		for tag in yearTag:
 			if tag in audio.keys():
-				year = audio[tag].text
+				year = audio[tag]
+				if isinstance(year, list):
+					year = year[0]
 				break
 		return year
 	
@@ -100,51 +108,6 @@ class song:
 				break
 		return genre
 		
-	def songSql(sinfo):
-		self.id = 0
-		self.name = 0
-		self.path = 0
-		self.filename = 0
-		self.hash = 0
-		self.album = 0
-		self.artist = 0
-		self.length = 0
-		self.track = 0
-		self.genre = 0
-		self.year = 0
-		self.rating = 0
-		
-		if sinfo[0]:
-			self.id = sinfo[0]
-		if sinfo[1]:
-			self.name = sinfo[1]
-		if sinfo[2]:
-			self.path = sinfo[2]
-		if sinfo[3]:
-			self.filename = sinfo[3]
-		if sinfo[4]:
-			self.hash = sinfo[4]
-		if sinfo[5]:
-			self.album = sinfo[5]
-		if sinfo[6]:
-			self.artist = sinfo[6]
-		if sinfo[7]:
-			self.length = sinfo[7]
-		if sinfo[8]:
-			self.track = sinfo[8]
-		if sinfo[9]:
-			self.genre = sinfo[9]
-		if sinfo[10]:
-			self.year = sinfo[10]
-		if sinfo[11]:
-			self.rating = sinfo[11]
-		
-#		song = music.song(id=id, name=name, path=path, filename=filename,
-#			hash=hash, album=album, artist=artist, length=length, track=track,
-#			genre=genre, year=year, rating=rating)
-		
-		return self
-
 class artist:
 	def __init__(self, name="", id=""):
 		"""

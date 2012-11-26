@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 from strmr import music
 	
@@ -13,12 +14,28 @@ def initdb():
 		c.execute(query)
 	conn.commit()
 
-def selectSong(id):
-	sql = "SELECT * FROM SONG WHERE id = " + id + ";"
+def exists():
+	return os.path.exists('data/strmr.db')
+	
+def selectPlay(id):
+	song = music.song()
+	sql = "SELECT id, name, path, filename, hash FROM songs " \
+		+ "WHERE id = " + id + ";"
 	c, conn = connect()
 	c.execute(sql)
 	sinfo = c.fetchone()
-	song = music.song.songSql(sinfo)
+	
+	if sinfo[0]:
+		song.id = sinfo[0]
+	if sinfo[1]:
+		song.name = sinfo[1]
+	if sinfo[2]:
+		song.path = sinfo[2]
+	if sinfo[3]:
+		song.filename = sinfo[3]
+	if sinfo[4]:
+		song.hash = sinfo[4]
+	
 	return song
 	
 def enterSong(song):
@@ -34,11 +51,12 @@ def enterSong(song):
 			sql += sql2
 	
 		if song.album:
-			sql2 = appendAlbum
+			sql2 = appendAlbum(song)
 			sql += sql2
 	
 	for query in sql:
 		c.execute(query)
+		
 	conn.commit()
 	return sql
 
@@ -58,9 +76,9 @@ def checkHash(song):
 def appendSong(song):
 	sql = []
 	sql.append("INSERT INTO SONGS (filename, path, hash, length, track, "
-		+ "genre, year) VALUES ('" + song.filename + "', '" + song.path 
-		+ "', '" + str(song.hash) + ", '" + str(song.length) + "', '" 
-		+ '/'.join(str(song.track)) + "', '" + '/'.join(str(song.genre)) 
+		+ "genre, date) VALUES ('" + song.filename + "', '" + song.path 
+		+ "', '" + str(song.hash) + "', '" + str(song.length) + "', '" 
+		+ '/'.join(song.track) + "', '" + '/'.join(song.genre) 
 		+ "', '" + str(song.year) + "');")
 	return sql
 	
@@ -68,25 +86,25 @@ def appendArtist(song):
 	sql = []
 	
 	sql.append("INSERT INTO ARTIST ('name') VALUES ('" 
-	+ song.artist + "');")
+	+ '/'.join(song.artist) + "');")
 	
 	sql.append("INSERT INTO songs_artist ('songs_id', 'artist_id')"
-	+ " VALUES ((select id from songs where hash = '" + song.hash + "'), "
-	+ "(select id from artist where name = '" + song.artist + "'));")
+	+ " VALUES ((select id from songs where hash = '" + str(song.hash) + "'), "
+	+ "(select id from artist where name = '" + '/'.join(song.artist) + "'));")
 	
 	return sql
 	
 def appendAlbum(song):
 	sql = []
 	sql.append("INSERT INTO ALBUM ('name') VALUES ('" 
-	+ song.album + "');")
+	+ '/'.join(song.album) + "');")
 	
 	sql.append("INSERT INTO songs_album ('songs_id', 'album_id')"
-	+ " VALUES ((select id from songs where hash = '" + song.hash + "'), "
-	+ "(select id from album where name = '" + song.album + "'));")
+	+ " VALUES ((select id from songs where hash = '" + str(song.hash) + "'), "
+	+ "(select id from album where name = '" + '/'.join(song.album) + "'));")
 	sql.append("INSERT INTO artist_album ('artist_id', 'album_id')"
-	+ " VALUES ((select id from songs where hash = '" + song.hash + "'), "
-	+ "(select id from album where name = '" + song.album + "'));")
+	+ " VALUES ((select id from songs where hash = '" + str(song.hash) + "'), "
+	+ "(select id from album where name = '" + '/'.join(song.album) + "'));")
 	
 	return sql
 	

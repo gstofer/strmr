@@ -2,6 +2,8 @@ import cherrypy
 import os
 from Cheetah.Template import Template
 
+from strmr import db
+
 tempdir = 'data/templates/'
 
 
@@ -18,6 +20,13 @@ class Songs(object):
 	@cherrypy.expose
 	def index(self):
 		t = Template(file=tempdir + 'songs.tmpl')
+		return _tostr(t)
+	
+	@cherrypy.expose
+	def play(self, id = None):
+		song = db.selectPlay(id)
+		t = Template(file=tempdir + 'play.tmpl')
+		t.song = song
 		return _tostr(t)
 
 class Albums(object):

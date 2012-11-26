@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+<audio controls="controls">
+#if $song.gettype() == 'mp3'
+	<source src="$song.fullpath()" type="audio/mpeg">
+#else if $song.gettype() == 'ogg'
+	<source src="$song.fullpath()" type="audio/ogg">
+#end if
+Your browser does not support the audio element.
+</audio>
+
+</body>
+</html>

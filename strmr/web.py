@@ -19,7 +19,9 @@ class Player(object):
 class Songs(object):
 	@cherrypy.expose
 	def index(self):
+		songs = db.selectSongs()
 		t = Template(file=tempdir + 'songs.tmpl')
+		t.songs = songs
 		return _tostr(t)
 	
 	@cherrypy.expose

@@ -6,10 +6,10 @@ import hashlib
 import os
 
 class song:
-	def __init__(self, name=0, id=0, path=0, filename=0, hash=0, album=0, 
+	def __init__(self, title=0, id=0, path=0, filename=0, hash=0, album=0, 
 			artist=0, length=0, track=0, genre=0, year=0, rating=0):
 		self.id = id
-		self.name = name
+		self.title = title
 		self.path = path
 		self.filename = filename
 		self.hash = hash

@@ -16,6 +16,19 @@ def initdb():
 
 def exists():
 	return os.path.exists('data/strmr.db')
+
+def selectSongs():
+	sql ="select songs.title, artist.name, album.name from songs, album, " \
+	+ "artist join songs_album on songs.id=songs_album.songs_id " \
+	+ "join songs_artist on songs.id=songs_artist.songs_id " \
+	+ "where album.id=songs_album.album_id " \
+	+ "and artist.id=songs_artist.artist_id"
+	c, conn = connect()
+	retr = c.execute(sql)
+	songs = []
+	for entry in retr:
+		songs.append(music.song(title=entry[0], artist=entry[1], album=entry[2]))
+	return songs
 	
 def selectPlay(id):
 	song = music.song()
@@ -76,10 +89,10 @@ def checkHash(song):
 def appendSong(song):
 	sql = []
 	sql.append("INSERT INTO SONGS (filename, path, hash, length, track, "
-		+ "genre, date) VALUES ('" + song.filename + "', '" + song.path 
+		+ "genre, date, title) VALUES ('" + song.filename + "', '" + song.path 
 		+ "', '" + str(song.hash) + "', '" + str(song.length) + "', '" 
 		+ '/'.join(song.track) + "', '" + '/'.join(song.genre) 
-		+ "', '" + str(song.year) + "');")
+		+ "', '" + str(song.year) + "', '" + '/'.join(song.title) + "');")
 	return sql
 	
 def appendArtist(song):

@@ -4,5 +4,18 @@
 
 <h1>Songs</h1>
 
+<table border="1">
+<tr>
+	<th>Title</th>
+	<th>Artist</th>
+	<th>Album</th>
+</tr>
+#for $song in $songs
+<tr>
+	<td>$song.title</td>
+	<td>$song.artist</td>
+	<td>$song.album</td>
+#end for
+</table>
 </body>
 </html>

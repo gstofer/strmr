@@ -32,7 +32,7 @@ def selectSongs():
 	
 def selectPlay(id):
 	song = music.song()
-	sql = "SELECT id, name, path, filename, hash FROM songs " \
+	sql = "SELECT id, title, path, filename, hash, base FROM songs " \
 		+ "WHERE id = " + id + ";"
 	c, conn = connect()
 	c.execute(sql)
@@ -48,6 +48,8 @@ def selectPlay(id):
 		song.filename = sinfo[3]
 	if sinfo[4]:
 		song.hash = sinfo[4]
+	if sinfo[5]:
+		song.base = sinfo[5]
 	
 	return song
 	
@@ -89,10 +91,11 @@ def checkHash(song):
 def appendSong(song):
 	sql = []
 	sql.append("INSERT INTO SONGS (filename, path, hash, length, track, "
-		+ "genre, date, title) VALUES ('" + song.filename + "', '" + song.path 
+		+ "genre, date, title, base) VALUES ('" + song.filename + "', '" + song.path 
 		+ "', '" + str(song.hash) + "', '" + str(song.length) + "', '" 
 		+ '/'.join(song.track) + "', '" + '/'.join(song.genre) 
-		+ "', '" + str(song.year) + "', '" + '/'.join(song.title) + "');")
+		+ "', '" + str(song.year) + "', '" + '/'.join(song.title) + "', '"
+		+ song.base + "');")
 	return sql
 	
 def appendArtist(song):

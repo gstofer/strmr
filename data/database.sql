@@ -2,5 +2,5 @@ CREATE TABLE IF NOT EXISTS "album" ("id" integer NOT NULL PRIMARY KEY, "name" va
 CREATE TABLE IF NOT EXISTS "artist_album" ("id" integer NOT NULL PRIMARY KEY, "artist_id" integer NOT NULL, "album_id" integer NOT NULL REFERENCES "album" ("id"), UNIQUE ("artist_id", "album_id"));
 CREATE TABLE IF NOT EXISTS "artist" ("id" integer NOT NULL PRIMARY KEY, "name" varchar(30) NOT NULL);
 CREATE TABLE IF NOT EXISTS "songs_artist" ("id" integer NOT NULL PRIMARY KEY, "songs_id" integer NOT NULL, "artist_id" integer NOT NULL REFERENCES "artist" ("id"), UNIQUE ("songs_id", "artist_id"));
-CREATE TABLE IF NOT EXISTS "songs" ("id" integer NOT NULL PRIMARY KEY, "title" varchar(30),"genre" varchar(30),"length" double,"hash" varchar(40) NOT NULL,"track" integer, "date" varchar(10) NOT NULL, "filename" varchar(255) NOT NULL,"path" varchar(255) NOT NULL,"rating" integer);
+CREATE TABLE IF NOT EXISTS "songs" ("id" integer NOT NULL PRIMARY KEY, "title" varchar(30),"genre" varchar(30),"length" double,"hash" varchar(40) NOT NULL,"track" integer, "date" varchar(10) NOT NULL, "filename" varchar(255) NOT NULL,"path" varchar(255) NOT NULL, "base" varchar(30) NOT NULL, "rating" integer);
 CREATE TABLE IF NOT EXISTS "songs_album" ("id" integer NOT NULL PRIMARY KEY, "album_id" integer NOT NULL, "songs_id" integer NOT NULL REFERENCES "songs"("id"), UNIQUE ("songs_id", "album_id"));

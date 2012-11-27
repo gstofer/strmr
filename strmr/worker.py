@@ -9,10 +9,10 @@ def enterDB(dbQueue, lock):
 	while not dbQueue.empty():
 		try:
 			lock.acquire()
-			path, file = dbQueue.get(timeout=5)
+			base, path, file = dbQueue.get(timeout=5)
 			lock.release()
 			songpath = os.path.realpath(path)
-			song = music.song(path=songpath, filename=file)
+			song = music.song(path=songpath, filename=file, base=base)
 			song.pullHash()
 			song.pullInfo()
 			# print song.filename
@@ -26,9 +26,10 @@ def enterDB(dbQueue, lock):
 			print "Empty DB Queue"
 
 def walker(folder, dbQueue, lock):
+	base = folder
 	for (path, dirs, files) in os.walk(folder):
 		mp3s = filter(lambda x: 'mp3' == x[-3:], files)
 		for file in mp3s:
 			lock.acquire()
-			dbQueue.put((path, file))
+			dbQueue.put((base, path, file))
 			lock.release()

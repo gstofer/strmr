@@ -7,7 +7,7 @@ import os
 
 class song:
 	def __init__(self, title=0, id=0, path=0, filename=0, hash=0, album=0, 
-			artist=0, length=0, track=0, genre=0, year=0, rating=0):
+			artist=0, length=0, track=0, genre=0, year=0, rating=0, base=0):
 		self.id = id
 		self.title = title
 		self.path = path
@@ -20,12 +20,22 @@ class song:
 		self.genre = genre
 		self.year = year
 		self.rating = rating
+		self.base = base
 		if filename and path:
 			if os.path.exists(self.fullpath()):
 				self.pullHash()
 
 	def fullpath(self):
 		return self.path + "\\" + self.filename
+	
+	def urlpath(self):
+		basepath = os.path.basename(self.base)
+		relpath = os.path.relpath(self.path, self.base)
+		if relpath != '.':
+			urlpath = "/static/" + basepath + "/" + relpath + "/" + self.filename
+		else:
+			urlpath = "/static/" + basepath + "/" + self.filename
+		return urlpath
 	
 	def pullHash(self):
 		md5 = hashlib.md5()

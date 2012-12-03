@@ -4,6 +4,9 @@ import os
 from strmr import music
 	
 def initdb():
+	"""
+		create the database from the database.sql file
+	"""
 	c, conn = connect()
 	sql = []
 	with open('data\\database.sql') as f:
@@ -15,9 +18,15 @@ def initdb():
 	conn.commit()
 
 def exists():
+	"""
+		check if the database file exists.  Doesn't check schema
+	"""
 	return os.path.exists('data/strmr.db')
 
 def selectSongs():
+	"""
+		select every song with the album name and artist name
+	"""
 	sql ="select songs.title, artist.name, album.name from songs, album, " \
 	+ "artist join songs_album on songs.id=songs_album.songs_id " \
 	+ "join songs_artist on songs.id=songs_artist.songs_id " \
@@ -31,6 +40,9 @@ def selectSongs():
 	return songs
 	
 def selectPlay(id):
+	"""
+		select a song to play based on the song ID
+	"""
 	song = music.song()
 	sql = "SELECT id, title, path, filename, hash, base FROM songs " \
 		+ "WHERE id = " + id + ";"
@@ -54,21 +66,28 @@ def selectPlay(id):
 	return song
 	
 def enterSong(song):
+	"""
+		Get sql queries needed to enter the song
+	"""
 	c, conn = connect()
 	sql = []
 
+	# checks if the song is already in the database by hash
 	if checkHash(song):
 		sql2 = appendSong(song)
 		sql += sql2
 		
+		# checks if the song has an artist
 		if song.artist:
 			sql2 = appendArtist(song)
 			sql += sql2
 	
+		# checks if the song has an album
 		if song.album:
 			sql2 = appendAlbum(song)
 			sql += sql2
 	
+	# execute all the queries
 	for query in sql:
 		c.execute(query)
 		
@@ -76,6 +95,9 @@ def enterSong(song):
 	return sql
 
 def checkHash(song):
+	"""
+		checks if hash of the file exists in the database
+	"""
 	sql = "Select path, filename, hash from songs where hash = '" + song.hash + "';"
 	c, conn = connect()
 	c.execute(sql)
@@ -89,6 +111,10 @@ def checkHash(song):
 	
 	
 def appendSong(song):
+	"""
+		gets the sql query needed to enter the song into the database based
+		on the song object
+	"""
 	sql = []
 	sql.append("INSERT INTO SONGS (filename, path, hash, length, track, "
 		+ "genre, date, title, base) VALUES ('" + song.filename + "', '" + song.path 
@@ -99,6 +125,10 @@ def appendSong(song):
 	return sql
 	
 def appendArtist(song):
+	"""
+		gets the sql query needed to enter the artist into the database based
+		on the song object
+	"""
 	sql = []
 	
 	sql.append("INSERT INTO ARTIST ('name') VALUES ('" 
@@ -111,6 +141,10 @@ def appendArtist(song):
 	return sql
 	
 def appendAlbum(song):
+	"""
+		gets the sql query needed to enter the album into the database based 
+		on the song object
+	"""
 	sql = []
 	sql.append("INSERT INTO ALBUM ('name') VALUES ('" 
 	+ '/'.join(song.album) + "');")
@@ -125,6 +159,9 @@ def appendAlbum(song):
 	return sql
 	
 def connect():
+	"""
+		connects to the database and returns the cursor and connection object
+	"""
 	conn = sqlite3.connect('data\\strmr.db')
 	c = conn.cursor()
 	return c, conn

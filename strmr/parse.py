@@ -14,6 +14,9 @@ from strmr import music
 from strmr import worker
 
 class config:
+	"""
+		Parse through the specified configuration file
+	"""
 	def __init__(self, file="strmr.conf"):
 		parser = ConfigParser.SafeConfigParser()
 		parser.read(file)
@@ -32,21 +35,28 @@ def pullMusic(folders):
 	print "Start Parsing Folders!"
 	lock = Lock()
 	dbQueue = Queue()
+	
+	# create a process for each music folder in the configuration file
 	for folder in folders:
 		walker = Process(target=worker.walker, args=(folder, dbQueue, lock,))
 		walker.start()
 	while dbQueue.empty():
 		pass
 	
-	#time.sleep(3)
-	
+	# create a process to enter files from the dbQueue into the database
 	enterdb = Process(target=worker.enterDB, args=(dbQueue, lock))
 	enterdb.start()
+
+	# wait until enterDB is finished before starting
+	# This can be taken out later.  I want complete information for testing
 	enterdb.join()
 	
 	print "Done!"
 	
 def splitComma(value):
+	"""
+		used to parse the music folders
+	"""
 	values = []
 	splits = value.split(',')
 	

@@ -1,4 +1,5 @@
 import hashlib
+import random
 
 def md5Checksum(path, file):
 	"""
@@ -12,4 +13,8 @@ def md5Checksum(path, file):
 		if not data:
 			break
 		md5.update(data)
-	return md5.hexdigest()	
+	return md5.hexdigest()
+
+def getrandom(number):
+	return random.randint(1,number)
+	

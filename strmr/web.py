@@ -1,8 +1,10 @@
 import cherrypy
 import os
+import json
 from Cheetah.Template import Template
 
 from strmr import db
+from strmr import helper
 
 tempdir = 'data/templates/'
 
@@ -21,6 +23,17 @@ class Player(object):
 	def index(self):
 		t = Template(file=tempdir + 'player.tmpl')
 		return _tostr(t)
+	
+	@cherrypy.expose
+	def nextsong(self):
+		"""
+			Returns a json object with information on the next song to play
+		"""
+		max = db.maxSongs()
+		id = helper.getrandom(max)
+		song = db.selectPlay(id)
+		retval = json.dumps(song.getDict()) 
+		return retval
 
 class Songs(object):
 	"""

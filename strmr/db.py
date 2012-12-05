@@ -38,6 +38,14 @@ def selectSongs():
 	for entry in retr:
 		songs.append(music.song(title=entry[0], artist=entry[1], album=entry[2]))
 	return songs
+
+def maxSongs():
+	c, conn = connect()
+	sql = "select max(id) from songs"
+	c.execute(sql)
+	sqlret = c.fetchone()
+	max = sqlret[0]
+	return max
 	
 def selectPlay(id):
 	"""
@@ -45,7 +53,7 @@ def selectPlay(id):
 	"""
 	song = music.song()
 	sql = "SELECT id, title, path, filename, hash, base FROM songs " \
-		+ "WHERE id = " + id + ";"
+		+ "WHERE id = " + str(id) + ";"
 	c, conn = connect()
 	c.execute(sql)
 	sinfo = c.fetchone()

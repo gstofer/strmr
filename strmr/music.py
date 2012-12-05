@@ -29,7 +29,7 @@ class song:
 		if filename and path:
 			if os.path.exists(self.fullpath()):
 				self.pullHash()
-
+				
 	def fullpath(self):
 		"""
 			returns the full path of the file
@@ -164,6 +164,23 @@ class song:
 				genre = audio[tag].text
 				break
 		return genre
+	
+	def getDict(self):
+		songdict = {}
+		songdict.update({
+			'id':self.id, 
+			'title':self.title, 
+			'path':self.urlpath(), 
+			'hash':self.hash, 
+			'album':self.album,
+			'artist':self.artist, 
+			'length':self.length, 
+			'track':self.track,
+			'genre':self.genre, 
+			'year':self.year, 
+			'rating':self.rating
+		})
+		return songdict
 		
 class artist:
 	def __init__(self, name="", id=""):
@@ -172,8 +189,11 @@ class artist:
 			of album objects
 		"""
 		self.id = ""
-		self.albums = []
+		self.albums = self.getalbums()
 		self.name = name
+	
+	def getalbums(self):
+		pass
 
 class album:
 	def __init__(self, name="", year="", artist=""):
@@ -183,5 +203,11 @@ class album:
 		"""
 		self.id = ""
 		self.name = name
-		self.songs = []
-		self.year = year	
+		self.songs = self.getsongs()
+		self.year = year
+	
+	def getsongs(self):
+		pass
+	
+	def getArtwork(self):
+		pass
